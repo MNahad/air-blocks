@@ -8,7 +8,7 @@ class Login(widgets.QMainWindow):
     def __init__(self):
         widgets.QMainWindow.__init__(self)
 
-        self.winDims = [1024, 576]
+        self.winDims = [480, 640]
         self.setMinimumSize(QtCore.QSize(self.winDims[0], self.winDims[1]))
         self.setWindowTitle("Please log in")
 
@@ -26,9 +26,9 @@ class Login(widgets.QMainWindow):
         self.entryWidget = widgets.QWidget(self)
         self.buttonWidget = widgets.QWidget(self)
 
-        self.popHeading()
-        self.popEntry()
-        self.popButton()
+        self.populateHeading()
+        self.populateEntry()
+        self.populateButton()
 
         self.grid.addWidget(self.headingWidget, 0, 0)
         self.grid.addWidget(self.entryWidget, 1, 0)
@@ -39,42 +39,27 @@ class Login(widgets.QMainWindow):
         self.show()
 
 
-    def popHeading(self):
+    def populateHeading(self):
         self.headingTxt = widgets.QLabel(self.headingWidget)
         self.headingTxt.setText("Welcome. Please log in using your credentials.")
         self.headingTxt.setAlignment(QtCore.Qt.AlignCenter)
 
 
-    def popEntry(self):
-        self.unameLabel = widgets.QLabel(self.entryWidget)
-        self.unameLabel.setText('User Name:')
-        self.unameBox = widgets.QLineEdit(self.entryWidget)
-
-        self.passwdLabel = widgets.QLabel(self.entryWidget)
-        self.passwdLabel.setText('Password:')
-        self.passwdBox = widgets.QLineEdit(self.entryWidget)
-
-        self.entryGrid = widgets.QGridLayout(self.entryWidget)
-        self.entryWidget.setLayout(self.entryGrid)
-        self.entryGrid.addWidget(self.unameLabel, 0, 0)
-        self.entryGrid.addWidget(self.unameBox, 0, 1)
-        self.entryGrid.addWidget(self.passwdLabel, 1, 0)
-        self.entryGrid.addWidget(self.passwdBox, 1, 1)
+    def populateEntry(self):
+        self.credBox = widgets.QGroupBox("Enter credentials", self.entryWidget)
+        self.credLayout = widgets.QFormLayout()
+        self.credLayout.addRow(widgets.QLabel("User Name:"), widgets.QLineEdit())
+        self.credLayout.addRow(widgets.QLabel("Password:"), widgets.QLineEdit())
+        self.credBox.setLayout(self.credLayout)
 
 
-    def popButton(self):
-        self.submitButton = widgets.QPushButton("Submit", self.buttonWidget)
-        self.submitButton.clicked.connect(self.submit)
-        self.submitButton.setToolTip("Submit your credentials")
-
-        self.exitButton = widgets.QPushButton("Exit", self.buttonWidget)
-        self.exitButton.clicked.connect(self.close)
-        self.exitButton.setToolTip("Exit application")
-
-        self.buttonGrid = widgets.QGridLayout(self.buttonWidget)
-        self.buttonWidget.setLayout(self.buttonGrid)
-        self.buttonGrid.addWidget(self.submitButton, 0, 0)
-        self.buttonGrid.addWidget(self.exitButton, 0, 1)
+    def populateButton(self):
+        self.submitButton = widgets.QDialogButtonBox(
+            widgets.QDialogButtonBox.Ok | widgets.QDialogButtonBox.Cancel,
+            self.buttonWidget,
+        )
+        self.submitButton.accepted.connect(self.submit)
+        self.submitButton.rejected.connect(self.close)
 
 
     def submit(self):
