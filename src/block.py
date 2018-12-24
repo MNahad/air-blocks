@@ -8,24 +8,31 @@ class Block:
     def __init__(self, data, prevHash):
         self.data = str(data)
         self.timestamp = float(time.time())
-        self.prevHash = str(prevHash).encode()
+        self.prevHash = prevHash
 
-        hash = hashlib.sha256()
-        hash.update(str(self.timestamp).encode())
-        hash.update(self.prevHash)
-        hash.update(str(self.data).encode())
-        self.hash = hash.digest()
+        theHash = hashlib.sha256()
+        theHash.update(str(self.timestamp).encode())
+        theHash.update(self.prevHash)
+        theHash.update(str(self.data).encode())
+        self.hash = theHash.digest()
 
 
     def addToTheChain(self):
         with open(blockchainPath) as theChain:
             chain = json.load(theChain)
 
+        prevStr = ""
+        for theByte in self.prevHash:
+            prevStr += chr(theByte)
+        hashStr = ""
+        for theByte in self.hash:
+            hashStr += chr(theByte)
+
         newBlock = {
             "Timestamp": float(self.timestamp),
-            "PrevHash": str(self.prevHash),
+            "PrevHash": prevStr,
             "Data": str(self.data),
-            "Hash": str(self.hash),
+            "Hash": hashStr,
         }
 
         chain.update(newBlock)
@@ -43,11 +50,17 @@ def fullBlockchain():
 def loadPrevHash():
     with open(blockchainPath) as theChain:
         chain = json.load(theChain)
-    return bytes(chain["Hash"])
+    num = []
+    for c in chain["Hash"]:
+        num.append(ord(c))
+    theHash = bytes(num)
+    return theHash
 
 
 if __name__ == "__main__":
-    myBlock = Block("2", "0")
+    genesis = hashlib.sha256()
+    genesis.update(b"0")
+    myBlock = Block("42", genesis.digest())
     myBlock.addToTheChain()
 
     pprint(fullBlockchain())
