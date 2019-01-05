@@ -58,14 +58,21 @@ def loadPrevHash():
 
 
 if __name__ == "__main__":
-    genesis = hashlib.sha256()
-    genesis.update(b"0")
-    myBlock = Block("42", genesis.digest())
-    myBlock.addToTheChain()
+    GBOAC_gen_data = {
+        "AC": "G-BOAC",
+        "Sign": "MN",
+    }
+    genesisHash = hashlib.sha256()
+    genesisHash.update(b"0")
+    GBOAC_gen = Block(GBOAC_gen_data, genesisHash.digest())
+    GBOAC_gen.addToTheChain()
 
     pprint(fullBlockchain())
 
-    myNxtBlk = Block("42", loadPrevHash())
-    myNxtBlk.addToTheChain()
+    GBOAC_new_data = {
+        "ChkDate": float(time.time()) - 86400,
+    }
+    GBOAC_new = Block(GBOAC_new_data, loadPrevHash())
+    GBOAC_new.addToTheChain()
 
     pprint(fullBlockchain())
