@@ -70,7 +70,7 @@ if __name__ == "__main__":
     pprint(fullBlockchain())
 
     GBOAC_new_data = {
-        "ChkDate": float(time.time()) - 86400,
+        "ChkDate": float(time.time()) - 86400*2,
         "Sign": "MN",
     }
     GBOAC_new = Block(GBOAC_new_data, loadPrevHash())
