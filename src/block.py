@@ -1,4 +1,6 @@
-import hashlib, time, json
+#!/usr/bin/env python3
+
+import hashlib, time, os, json
 from pprint import pprint
 
 blockchainPath = "assets/blockchain.json"
@@ -7,7 +9,7 @@ blockchainPath = "assets/blockchain.json"
 class Block:
     def __init__(self, data, prevHash):
         self.data = data
-        self.timestamp = float(time.time())
+        self.timestamp = int(time.time())
         self.prevHash = prevHash
 
         theHash = hashlib.sha256()
@@ -29,7 +31,7 @@ class Block:
             hashStr += chr(theByte)
 
         newBlock = {
-            "Timestamp": float(self.timestamp),
+            "Timestamp": int(self.timestamp),
             "PrevHash": prevStr,
             "Data": self.data,
             "Hash": hashStr,
@@ -58,8 +60,13 @@ def loadPrevHash():
 
 
 if __name__ == "__main__":
+    os.environ['TZ']='UTC'
+
     GBOAC_gen_data = {
         "AC": "G-BOAC",
+        "FH": 0,
+        "FC": 0,
+        "HRS": 0,
     }
     genesisHash = hashlib.sha256()
     genesisHash.update(b"0")
@@ -70,7 +77,11 @@ if __name__ == "__main__":
     pprint(fullBlockchain())
 
     GBOAC_new_data = {
-        "ChkDate": float(time.time()) - 86400*2,
+        "Chk": "PREDEP",
+        "ChkDate": int(time.mktime(time.strptime(
+            "2019-01-31 00:10:15",
+            "%Y-%m-%d %H:%M:%S",
+        ))),
         "Sign": "MN",
     }
     GBOAC_new = Block(GBOAC_new_data, loadPrevHash())
