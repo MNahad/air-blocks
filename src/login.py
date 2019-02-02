@@ -1,11 +1,12 @@
-import sys
+#!/usr/bin/env python3
+
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets as widgets
 from PyQt5 import QtGui
 
 
 class Login(widgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, parent):
         widgets.QMainWindow.__init__(self)
 
         self.winDims = [480, 640]
@@ -16,6 +17,8 @@ class Login(widgets.QMainWindow):
         self.ctrPoint = widgets.QDesktopWidget().availableGeometry().center()
         self.qtRect.moveCenter(self.ctrPoint)
         self.move(self.qtRect.topLeft())
+
+        self.err = widgets.QErrorMessage()
 
         self.centralWidget = widgets.QWidget(self)
         self.grid = widgets.QGridLayout(self)
@@ -36,7 +39,7 @@ class Login(widgets.QMainWindow):
 
         self.makeMenu()
 
-        self.show()
+        self.parent = parent
 
 
     def populateHeading(self):
@@ -47,9 +50,12 @@ class Login(widgets.QMainWindow):
 
     def populateEntry(self):
         self.credBox = widgets.QGroupBox("Enter credentials", self.entryWidget)
+        self.uName = widgets.QLineEdit()
+        self.passwd = widgets.QLineEdit()
+        self.passwd.setEchoMode(widgets.QLineEdit.Password)
         self.credLayout = widgets.QFormLayout()
-        self.credLayout.addRow(widgets.QLabel("User Name:"), widgets.QLineEdit())
-        self.credLayout.addRow(widgets.QLabel("Password:"), widgets.QLineEdit())
+        self.credLayout.addRow(widgets.QLabel("User Name:"), self.uName)
+        self.credLayout.addRow(widgets.QLabel("Password:"), self.passwd)
         self.credBox.setLayout(self.credLayout)
 
 
@@ -63,7 +69,10 @@ class Login(widgets.QMainWindow):
 
 
     def submit(self):
-        pass
+        if (self.uName.text() == "ENGINEER" and self.passwd.text() == "111"):
+            self.parent.loginOK()
+        else:
+            self.err.showMessage("Incorrect login credentials.")
 
 
     def makeMenu(self):
@@ -83,9 +92,3 @@ class Login(widgets.QMainWindow):
             "About this Application",
             "Details about this application can be found on https://GitHub.com/MNahad",
         )
-
-
-if __name__ == "__main__":
-    app = widgets.QApplication(sys.argv)
-    mainLogin = Login()
-    sys.exit(app.exec_())
