@@ -28,28 +28,52 @@ class Menu(widgets.QMainWindow):
 
         self.viewWidget = widgets.QWidget(self)
         self.addWidget = widgets.QWidget(self)
+        self.logoutWidget = widgets.QWidget(self)
 
         self.populateView()
         self.populateAdd()
+        self.populateLogout()
 
         self.grid.addWidget(self.viewWidget, 0, 0)
-        self.grid.addWidget(self.addWidget, 1, 0)
+        self.grid.addWidget(self.addWidget, 0, 1)
+        self.grid.addWidget(self.logoutWidget, 1, 1)
 
         self.loginUI = login.Login(self)
         self.loginUI.show()
 
 
     def populateView(self):
-        self.viewButton = widgets.QPushButton(self.viewWidget)
+        self.viewButton = widgets.QPushButton(
+            "VIEW",
+            self.viewWidget,
+        )
 
 
     def populateAdd(self):
-        self.addButton = widgets.QPushButton(self.addWidget)
+        self.addButton = widgets.QPushButton(
+            "ADD ENTRY",
+            self.addWidget,
+        )
+
+
+    def populateLogout(self):
+        self.logoutButton = widgets.QPushButton(
+            "LOGOUT",
+            self.logoutWidget,
+        )
+        self.logoutButton.clicked.connect(self.logout)
 
 
     def loginOK(self):
+        self.uName = self.loginUI.uName.text()
         self.show()
         self.loginUI.close()
+
+
+    def logout(self):
+        self.loginUI = login.Login(self)
+        self.loginUI.show()
+        self.hide()
 
 
 if __name__ == "__main__":
