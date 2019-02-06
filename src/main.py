@@ -12,7 +12,7 @@ class Menu(widgets.QMainWindow):
 
         self.winDims = [480, 640]
         self.setMinimumSize(QtCore.QSize(self.winDims[0], self.winDims[1]))
-        self.setWindowTitle("Please log in")
+        self.setWindowTitle("Main menu")
 
         self.qtRect = self.frameGeometry()
         self.ctrPoint = widgets.QDesktopWidget().availableGeometry().center()
@@ -74,6 +74,27 @@ class Menu(widgets.QMainWindow):
         self.loginUI = login.Login(self)
         self.loginUI.show()
         self.hide()
+
+
+class ViewGUI(widgets.QMainWindow):
+    def __init__(self):
+        widgets.QMainWindow.__init__(self)
+
+        self.winDims = [480, 640]
+        self.setMinimumSize(QtCore.QSize(self.winDims[0], self.winDims[1]))
+        self.setWindowTitle("View records")
+
+        self.qtRect = self.frameGeometry()
+        self.ctrPoint = widgets.QDesktopWidget().availableGeometry().center()
+        self.qtRect.moveCenter(self.ctrPoint)
+        self.move(self.qtRect.topLeft())
+
+        self.err = widgets.QErrorMessage()
+
+        self.centralWidget = widgets.QWidget(self)
+        self.grid = widgets.QGridLayout(self)
+        self.centralWidget.setLayout(self.grid)
+        self.setCentralWidget(self.centralWidget)
 
 
 if __name__ == "__main__":
