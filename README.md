@@ -1,2 +1,2 @@
-# blockchain-demo
-Blockchain Demonstrator
+# air-blocks
+Decentralised Aircraft Data Logging Service
