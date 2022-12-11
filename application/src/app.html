@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		%sveltekit.head%
+	</head>
+	<body>
+		<div>%sveltekit.body%</div>
+		<form>
+			<md-formfield id="label-type">Type</md-formfield>
+			<md-filled-text-field id="field-type"></md-filled-text-field>
+			<md-formfield id="label-registration">Registration</md-formfield>
+			<md-filled-text-field id="field-registration"></md-filled-text-field>
+			<md-formfield id="label-date">Date</md-formfield>
+			<md-filled-text-field id="field-date"></md-filled-text-field>
+			<md-formfield id="label-text">Text</md-formfield>
+			<md-filled-text-field id="field-text"></md-filled-text-field>
+			<md-elevated-button onclick="console.log('Submitted')">Submit</md-elevated-button>
+		</form>
+		<script type="module">
+			import './node_modules/@material/web/textfield/filled-text-field.js';
+			import './node_modules/@material/web/formfield/formfield.js';
+			import './node_modules/@material/web/button/elevated-button.js';
+		</script>
+	</body>
+</html>
