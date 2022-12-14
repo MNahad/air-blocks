@@ -1,6 +1,7 @@
 package chaincode
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
@@ -11,10 +12,11 @@ type SmartContract struct {
 }
 
 type Doc struct {
-	Type         string `json:"type"`
-	Registration string `json:"registration"`
-	Date         string `json:"date"`
-	Hash         string `json:"hash"`
+	Type         string   `json:"type"`
+	Registration string   `json:"registration"`
+	Date         string   `json:"date"`
+	Text         string   `json:"text"`
+	Hash         [32]byte `json:"hash"`
 }
 
 func (s *SmartContract) CreateDoc(
@@ -22,13 +24,14 @@ func (s *SmartContract) CreateDoc(
 	docType,
 	registration,
 	date,
-	hash string,
+	text string,
 ) error {
 	doc := Doc{
 		Type:         docType,
 		Registration: registration,
 		Date:         date,
-		Hash:         hash,
+		Text:         text,
+		Hash:         sha256.Sum256([]byte(text)),
 	}
 	docJSON, err := json.Marshal(doc)
 	if err != nil {
